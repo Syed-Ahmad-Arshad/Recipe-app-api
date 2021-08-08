@@ -3,35 +3,39 @@ from django.contrib.auth import get_user_model
 
 
 class ModelTests(TestCase):
-    def test_create_user_with_email_is_successful(self):
-        """ Test creating a new user with email is successful """
-        email = 'ahmadarshad4360@gmail.com'
-        password = 'Test123'
-        user=get_user_model().objects.create_user(
+    def test_create_user_with_email_successful(self):
+        """Test creating a new user with an email is successful"""
+        email = 'test@londonappdev.com'
+        password = 'Testpass123'
+        user = get_user_model().objects.create_user(
             email=email,
             password=password
         )
+
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
 
-
     def test_new_user_email_normalized(self):
-        """ Test if the new user has a normalized email address or not """
-        email = 'ahmadarshad@GMAIL.COM'
+        """Test the email for a new user is normalized"""
+        email = 'test@LONDONAPPDEV.COM'
         user = get_user_model().objects.create_user(email, 'test123')
+
         self.assertEqual(user.email, email.lower())
 
-
     def test_new_user_invalid_email(self):
-        """ Test creating user with no email raises error """
+        """Test creating user with no email raises error"""
         with self.assertRaises(ValueError):
-            get_user_model().objects.create_user(None, '123')
+            get_user_model().objects.create_user(None, 'test123')
 
-    def test_create_new_user(self):
-        """ Test creating a super user """
-        user = get_user_model().objects.create_super_user('ahmadarshad4360@gmail.com', 'test123')
+    def test_create_new_superuser(self):
+        """Test creating a new superuser"""
+        user = get_user_model().objects.create_superuser(
+            'test@londonappdev.com',
+            'test123'
+        )
+
         self.assertTrue(user.is_superuser)
-        self.assertTrue(user.is_staff)
+        self.assertTrue(user.is_staff)    
 
 
 
